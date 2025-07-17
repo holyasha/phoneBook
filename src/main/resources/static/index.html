@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Телефонный справочник компании</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body class="bg-gray-100">
+<!-- Header -->
+<header class="bg-blue-600 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Телефонный справочник</h1>
+        <div id="auth-buttons">
+            <button id="login-btn" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition">Войти</button>
+        </div>
+        <div id="user-menu" class="hidden">
+            <div class="relative">
+                <button id="user-menu-button" class="flex items-center space-x-2">
+                    <span id="username-display" class="font-medium"></span>
+                    <i class="fas fa-user-circle text-2xl"></i>
+                </button>
+                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                    <a href="#" id="logout-btn" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Auth Modal -->
+<div id="auth-modal" class="auth-modal">
+    <div class="auth-content">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Авторизация</h2>
+            <button id="close-auth-modal" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+        <form id="login-form">
+            <div class="mb-4">
+                <label for="login-email" class="block text-gray-700 mb-2">Email</label>
+                <input type="email" id="login-email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div class="mb-4">
+                <label for="login-password" class="block text-gray-700 mb-2">Пароль</label>
+                <input type="password" id="login-password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Войти</button>
+        </form>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-6">
+    <!-- Search and Add Contact (for authorized users) -->
+    <div class="bg-white p-4 rounded-lg shadow mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="relative w-full">
+                <input type="text" id="search-input" placeholder="Поиск по имени, отделу или номеру..." class="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
+            <button id="add-contact-btn" class="hidden bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                <i class="fas fa-plus"></i> Добавить сотрудника
+            </button>
+        </div>
+    </div>
+
+    <div class="flex">
+        <!-- Departments Sidebar -->
+        <div class="w-64 mr-6 hidden md:block">
+            <div class="bg-white rounded-lg shadow p-4 sticky top-6">
+                <h2 class="text-lg font-bold mb-4">Отделы</h2>
+                <ul id="department-list" class="space-y-2">
+                    <li><button data-department="all" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium bg-blue-100 text-blue-700">Все сотрудники</button></li>
+                    <li><button data-department="hr" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">БАППиБТ</button></li>
+                    <li><button data-department="finance" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">ВССиИБ</button></li>
+                    <li><button data-department="it" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">ЖДСТУ</button></li>
+                    <li><button data-department="marketing" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">КЭТиТ</button></li>
+                    <li><button data-department="sales" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">ЛиУТС</button></li>
+                    <li><button data-department="support" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">ЛТСТ</button></li>
+                    <li><button data-department="logistics" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">УТБиИС</button></li>
+                    <li><button data-department="production" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">УЭРиБТ</button></li>
+                    <li><button data-department="legal" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">ХиИЭ</button></li>
+                    <li><button data-department="management" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">Адм</button></li>
+                    <li><button data-department="other" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">Уч. отд</button></li>
+                    <li><button data-department="other" class="department-btn w-full text-left px-3 py-2 rounded-lg font-medium hover:bg-gray-100">Отд. инф</button></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contacts Container -->
+        <div id="contacts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Contacts will be loaded here -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="no-results" class="hidden text-center py-10">
+            <i class="fas fa-user-slash text-5xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-medium text-gray-500">Сотрудники не найдены</h3>
+            <p class="text-gray-400">Попробуйте изменить параметры поиска</p>
+        </div>
+    </div>
+</main>
+
+<!-- Add/Edit Contact Modal -->
+<div id="edit-modal" class="edit-modal">
+    <div class="edit-content">
+        <div class="flex justify-between items-center mb-4">
+            <h2 id="modal-title" class="text-xl font-bold">Добавить сотрудника</h2>
+            <button id="close-edit-modal" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+        <form id="contact-form">
+            <input type="hidden" id="contact-id">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="edit-name" class="block text-gray-700 mb-2">Имя*</label>
+                    <input type="text" id="edit-name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label for="edit-department" class="block text-gray-700 mb-2">Отдел*</label>
+                    <select id="edit-department" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <option value="">Выберите отдел</option>
+                        <option value="1">БАППиБТ</option>
+                        <option value="2">ВССиИБ</option>
+                        <option value="3">ЖДСТУ</option>
+                        <option value="4">КЭТиТ</option>
+                        <option value="5">ЛиУТС</option>
+                        <option value="6">ЛТСТ</option>
+                        <option value="7">УТБиИС</option>
+                        <option value="8">УЭРиБТ</option>
+                        <option value="9">ХиИЭ</option>
+                        <option value="10">ЦТУТП</option>
+                        <option value="11">Адм</option>
+                        <option value="12">Уч. отд</option>
+                        <option value="13">Отд. инф</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="edit-personal-phone" class="block text-gray-700 mb-2">Личный номер</label>
+                    <input type="tel" id="edit-personal-phone" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="edit-work-phone" class="block text-gray-700 mb-2">Рабочий номер*</label>
+                    <input type="tel" id="edit-work-phone" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label for="edit-email" class="block text-gray-700 mb-2">Email*</label>
+                    <input type="email" id="edit-email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label for="edit-officeNumber" class="block text-gray-700 mb-2">Кабинет (4 цифры)*</label>
+                    <input type="text" id="edit-officeNumber" pattern="\d{4}" maxlength="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label for="edit-additional-contact" class="block text-gray-700 mb-2">Доп. контакт (Telegram, WhatsApp)</label>
+                <input type="text" id="edit-additional-contact" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="edit-notes" class="block text-gray-700 mb-2">Дополнительная информация</label>
+                <textarea id="edit-notes" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" id="cancel-edit-btn" class="px-4 py-2 border rounded-lg hover:bg-gray-50 transition">Отмена</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Сохранить</button>
+                <button type="button" id="delete-btn" class="hidden bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Удалить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
