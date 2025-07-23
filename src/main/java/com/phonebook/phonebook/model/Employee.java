@@ -42,27 +42,6 @@ public class Employee {
     @Column(name = "status_note")
     private String statusNote;
 
-    private String mainPart;
-    private String overPart;
-
-    public String getMainPart() {
-        return mainPart;
-    }
-
-    public void setMainPart(String mainPart) {
-        this.mainPart = workPhone.substring(0, workPhone.length() - 4);
-        this.mainPart = mainPart;
-    }
-
-    public String getOverPart() {
-        return overPart;
-    }
-
-    public void setOverPart(String overPart) {
-        this.overPart = workPhone.substring(workPhone.length() - 4);
-        this.overPart = overPart;
-    }
-
     public Long getId() {
         return id;
     }

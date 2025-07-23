@@ -165,40 +165,61 @@ function debounce(func, timeout = 300) {
 // Основные функции
 async function renderContacts() {
     try {
-        const searchTerm = elements.searchInput.value.toLowerCase();
+        const searchTerm = elements.searchInput.value.toLowerCase().trim();
         let filteredContacts = await fetchContacts();
 
-        // Фильтрация по текущей вкладке
+        // Фильтрация по вкладке
         if (currentTab !== 'all') {
-            filteredContacts = filteredContacts.filter(contact => contact.department === currentTab);
+            filteredContacts = filteredContacts.filter(contact =>
+                contact.department == currentTab
+            );
         }
 
         // Фильтрация по поисковому запросу
         if (searchTerm) {
+            const cleanSearchTerm = searchTerm.replace(/\D/g, ''); // Для номеров телефонов
+
             filteredContacts = filteredContacts.filter(contact => {
+                // Полное ФИО
                 const fullName = `${contact.lastName} ${contact.firstName} ${contact.middleName || ''}`.toLowerCase();
-                const departmentName = DEPARTMENT_NAMES[contact.department] || '';
-                return (
-                    fullName.includes(searchTerm) ||
-                    departmentName.toLowerCase().includes(searchTerm) ||
-                    (contact.workPhone && contact.workPhone.replace(/[^\d]/g, '').includes(searchTerm.replace(/[^\d]/g, ''))) ||
-                    (contact.email && contact.email.toLowerCase().includes(searchTerm)) ||
-                    (contact.room && contact.room.toLowerCase().includes(searchTerm))
-                );
+
+                // Основные текстовые поля для поиска
+                const searchFields = [
+                    fullName,
+                    DEPARTMENT_NAMES[contact.department] || '',
+                    contact.email || '',
+                    contact.officeNumber || '',
+                    contact.additionalInfo || '',
+                    contact.statusNote || ''
+                ].map(f => f.toLowerCase());
+
+                // Телефонные номера (чистые цифры)
+                const phoneFields = [
+                    contact.workPhone || '',
+                    contact.personalPhone || ''
+                ].map(p => p.replace(/\D/g, ''));
+
+                // Telegram (убираем @ если есть)
+                const telegram = (contact.additionalInfo || '').toLowerCase().replace('@', '');
+
+                // Проверка совпадений
+                const textMatch = searchFields.some(f => f.includes(searchTerm));
+                const phoneMatch = cleanSearchTerm.length > 3 && phoneFields.some(p => p.includes(cleanSearchTerm));
+                const telegramMatch = telegram.includes(searchTerm.replace('@', ''));
+
+                return textMatch || phoneMatch || telegramMatch;
             });
         }
 
-        // Сортировка по фамилии и имени
-        filteredContacts.sort((a, b) => {
-            const nameA = `${a.lastName} ${a.firstName}`;
-            const nameB = `${b.lastName} ${b.firstName}`;
-            return nameA.localeCompare(nameB);
-        });
+        // Сортировка по ФИО
+        filteredContacts.sort((a, b) =>
+            `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)
+        );
 
         renderContactCards(filteredContacts);
     } catch (error) {
-        console.error('Ошибка рендеринга контактов:', error);
-        showToast('Ошибка отображения данных', 'error');
+        console.error('Ошибка рендеринга:', error);
+        showToast('Ошибка поиска', 'error');
     }
 }
 
@@ -435,7 +456,9 @@ function closeAuthModal() {
 // Инициализация
 function setupEventListeners() {
     // Поиск
-    elements.searchInput.addEventListener('input', debounce(renderContacts, 300));
+    elements.searchInput.addEventListener('input', debounce(() => {
+        renderContacts();
+    }, 300));
 
     // Модальные окна
     elements.loginBtn.addEventListener('click', openAuthModal);
