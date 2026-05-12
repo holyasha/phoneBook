@@ -21,10 +21,8 @@
             <a href="/users/register" style="display:inline-block; min-width:220px; text-align:center;">Добавить пользователя</a></li>
             <li sec:authorize="hasRole('ADMIN')"><a href="/departments/all">Подразделения</a></li>
             <li sec:authorize="hasRole('ADMIN')">
-    <a href="/departments/add" style="display:inline-block; min-width:200px; text-align:center;">
-        Добавить подразделение
-    </a>
-</li>
+            <a href="/departments/add" style="display:inline-block; min-width:200px; text-align:center;">Добавить подразделение</a>
+            </li>
             <li sec:authorize="isAuthenticated()">
     <span sec:authentication="name"></span>
 </li>
