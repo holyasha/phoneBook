@@ -10,16 +10,21 @@
                 </strong>
             </li>
         </ul>
-        <ul>
+        <ul >
             <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')"><a href="/employees/all">Сотрудники</a></li>
             <li sec:authorize="hasRole('ADMIN')"><a href="/employees/inactive">Удалённые</a></li>
             <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
-            <a href="/employees/add">Добавить сотрудника</a>
+            <a href="/employees/add" style="display:inline-block; min-width:220px; text-align:center;">Добавить сотрудника</a>
             </li>
-           <li sec:authorize="hasRole('ADMIN')"><a href="/moderators/all">Пользователи</a></li>
-           <li sec:authorize="hasRole('ADMIN')"><a href="/users/register">Добавить пользователя</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a href="/departments/all">Отделы</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a href="/departments/add">Добавить отдел</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a href="/moderators/all">Пользователи</a></li>
+            <li sec:authorize="hasRole('ADMIN')">
+            <a href="/users/register" style="display:inline-block; min-width:220px; text-align:center;">Добавить пользователя</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a href="/departments/all">Подразделения</a></li>
+            <li sec:authorize="hasRole('ADMIN')">
+    <a href="/departments/add" style="display:inline-block; min-width:200px; text-align:center;">
+        Добавить подразделение
+    </a>
+</li>
             <li sec:authorize="isAuthenticated()">
     <span sec:authentication="name"></span>
 </li>
