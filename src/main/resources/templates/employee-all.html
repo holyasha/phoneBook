@@ -164,13 +164,12 @@
          });
      }
 
-     // Поиск при паузе ввода (0.5 секунды)
      searchInput.addEventListener('input', function() {
          clearTimeout(debounceTimer);
 
          debounceTimer = setTimeout(() => {
              performSearch();
-         }, 1000); // 1.5 секунды паузы
+         }, 3000); // 3 секунды паузы
      });
 
      // Поиск при нажатии Enter
