@@ -7,8 +7,6 @@ import com.example.phonebook.dto.UpdateEmployeeDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -90,7 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void fireEmployee(Long id) {
         log.debug("Увольнение сотрудника: {}", id);
 
-        Employee employee = employeeRepository.findEmployeeById(id)
+                employeeRepository.findEmployeeById(id)
                 .orElseThrow(() -> new RuntimeException("Сотрудник не найден"));
 
         employeeRepository.deactivateById(id);

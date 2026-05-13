@@ -2,10 +2,8 @@ package com.example.phonebook.controllers;
 
 import com.example.phonebook.dto.AddEmployeeDto;
 import com.example.phonebook.dto.ShowDepartmentInfoDto;
-import com.example.phonebook.dto.ShowEmployeeDto;
 import com.example.phonebook.dto.UpdateEmployeeDto;
 import com.example.phonebook.models.entities.Employee;
-import com.example.phonebook.models.entities.UserAccount;
 import com.example.phonebook.services.DepartmentService;
 import com.example.phonebook.services.EmployeeService;
 import jakarta.validation.Valid;
@@ -13,12 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

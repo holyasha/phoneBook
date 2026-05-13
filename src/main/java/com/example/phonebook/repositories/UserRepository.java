@@ -1,7 +1,5 @@
 package com.example.phonebook.repositories;
 
-import com.example.phonebook.dto.ShowUserDto;
-import com.example.phonebook.models.entities.Employee;
 import com.example.phonebook.models.entities.UserAccount;
 import com.example.phonebook.models.enums.UserRole;
 

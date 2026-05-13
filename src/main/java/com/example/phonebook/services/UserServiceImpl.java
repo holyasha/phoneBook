@@ -10,11 +10,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.phonebook.dto.ShowEmployeeDto;
 import com.example.phonebook.dto.ShowUserDto;
 import com.example.phonebook.dto.UpdateUserDto;
 import com.example.phonebook.models.entities.UserAccount;
-import com.example.phonebook.repositories.DepartmentRepository;
 import com.example.phonebook.repositories.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final DepartmentRepository departmentRepository;
     private final ModelMapper mapper;
 
-    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository,
+    public UserServiceImpl(UserRepository userRepository, 
             ModelMapper mapper) {
         this.userRepository = userRepository;
-        this.departmentRepository = departmentRepository;
         this.mapper = mapper;
         log.info("UserServiceImpl инициализирован");
     }

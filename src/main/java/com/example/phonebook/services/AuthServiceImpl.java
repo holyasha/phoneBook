@@ -2,7 +2,6 @@ package com.example.phonebook.services;
 
 import com.example.phonebook.dto.UserRegistrationDto;
 import com.example.phonebook.models.entities.UserAccount;
-import com.example.phonebook.models.enums.UserRole;
 import com.example.phonebook.repositories.DepartmentRepository;
 import com.example.phonebook.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

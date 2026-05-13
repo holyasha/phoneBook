@@ -2,8 +2,6 @@ package com.example.phonebook.services;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import com.example.phonebook.dto.AddEmployeeDto;
 import com.example.phonebook.dto.ShowEmployeeDto;

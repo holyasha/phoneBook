@@ -6,7 +6,6 @@
  import com.example.phonebook.models.entities.Department;
 
  import java.util.List;
- import java.util.Optional;
 
  public interface DepartmentService {
 
