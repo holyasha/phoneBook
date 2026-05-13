@@ -1,0 +1,110 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict 9KplO9vug7DnzaGXrETN903hmGkNECQBXtkxpjrSIRMrNcrmAPvAmWgTlYpEIOM
+
+-- Dumped from database version 17.7 (Debian 17.7-3.pgdg13+1)
+-- Dumped by pg_dump version 17.6
+
+-- Started on 2026-01-22 21:57:17 UTC
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3453 (class 0 OID 16403)
+-- Dependencies: 217
+-- Data for Name: department; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (2, 'Вычислительные системы, сети и информационная безопасность', 'ВССиИБ', 'DEPARTMENT');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (3, 'Железнодорожные станции и транспортные узлы', 'ЖДСТУ', 'DEPARTMENT');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (5, 'Логистика и управление транспортными системами', 'ЛиУТС', 'DEPARTMENT');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (6, 'Логистические транспортные системы и технологии', 'ЛТСТ', 'DEPARTMENT');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (7, 'Управление транспортным бизнесом и интеллектуальные системы', 'УТБиИС', 'DEPARTMENT');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (8, 'Управление эксплуатационной работой и безопасностью на транспор...', 'УЭРиБТ', 'DEPARTMENT');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (9, 'Химия и инженерная экология', 'ХиИЭ', 'DEPARTMENT');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (10, 'Цифровые технологии управления транспортными процессами', 'ЦТУТП', 'DEPARTMENT');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (11, 'Администрация', 'АДМ', 'ADMINISTRATION');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (12, 'Учебный отдел', 'УО', 'OFFICE');
+INSERT INTO public.department (id, full_name, short_name, type) OVERRIDING SYSTEM VALUE VALUES (13, 'Отдел информатизации', 'ОИ', 'OFFICE');
+
+
+--
+-- TOC entry 3455 (class 0 OID 16409)
+-- Dependencies: 219
+-- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (10, 'Лебедев', 'Игорь', 'Николаевич', 2, '315', '9090', '+7 (911) 890-12-34', 'i.lebedev@transport-university.ru', 'Удаленная работа', 'pip1', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (9, 'Морозова', 'Ольга', 'Викторовна', 3, '218', '6723', '+7 (911) 789-01-23', 'o.morozova@transport-university.ru', 'Активен', 'jasbfjabs', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (14, 'Козлов', 'Михаил', 'Анатольевич', 2, '317', '6666', '+7 (911) 234-56-78', 'm.kozlov@transport-university.ru', 'Дежурный смены', 'wuw72', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (2, 'Смирнова', 'Мария', 'Ивановна', 5, '1553', '4444', '+7 (911) 345-67-89', 'm.smirnova@transport-university.ru', 'в отпуске с 15.09', 'aboba', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (5, 'Соколов', 'Андрей', 'Владимирович', 9, '1316', '3125', '+7 (911) 678-90-12', 'a.sokolov@transport-university.ru', 'на больничном', 'agadgdag', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (13, 'Волкова', 'Наталья', 'Сергеевна', 8, '209', '1234', '+7 (911) 123-45-67', 'n.volkova@transport-university.ru', NULL, NULL, true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (7, 'Келесбаев', 'Тимур', 'Дмитриевич', 10, '1316', '4617', '+79992323232', 'goou.price@gmail.com', '322', 'wannabepizza18', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (11, 'Некапов', 'Олег', 'Сергеевич', 11, '1418', '1428', '+79036757726', 'olekap99@mail.ru', '', 'olekap99', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (12, 'Собянин', 'Всеволод', 'Анатольевич', 12, '1213', '1337', '+79777777777', 'sob.iuct@yandex.ru', '', 'sob44', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (6, 'Зубин', 'Сергей', 'Анатольевич', 6, '1318-б', '1311', '89034561387', 'abdkf@mail.ru', NULL, 'fnj', true);
+INSERT INTO public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) OVERRIDING SYSTEM VALUE VALUES (1, 'Иванов', 'Алексей', 'Петрович', 10, '1354', '0125', '+7 (911) 234-56-78', 'a.ivanov@transport-university.ru', NULL, 'Ochendobr', true);
+
+
+--
+-- TOC entry 3457 (class 0 OID 16415)
+-- Dependencies: 221
+-- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.user_account (id, username, password_hash, role, department_id) OVERRIDING SYSTEM VALUE VALUES (5, 'moder', '$2a$10$AJtfQPoId4cTV4n10d0HOePdTJUaYF.dR4h07zDrjvmkzoA8S1PNG', 'MODERATOR', 10);
+INSERT INTO public.user_account (id, username, password_hash, role, department_id) OVERRIDING SYSTEM VALUE VALUES (6, 'moder2', '$2a$10$UQAE.IwQxsF7OCAY4ZRm9.niIlye.RhIW5y5oGYoEwwEuC0g9r3kS', 'MODERATOR', 2);
+INSERT INTO public.user_account (id, username, password_hash, role, department_id) OVERRIDING SYSTEM VALUE VALUES (2, 'abob', '$2a$10$7c2fVtdW8Q4HaUpxOuryDeuaDDfSNtRwyYV8WmGQFeuVT/Q7pidUe', 'ADMIN', 11);
+INSERT INTO public.user_account (id, username, password_hash, role, department_id) OVERRIDING SYSTEM VALUE VALUES (7, 'admin', '$2a$10$WgoZMCdFwOga4RJx6Ir5eO.c53n3vsh4Sse17jWmyycTJ8FkS35RO', 'ADMIN', NULL);
+INSERT INTO public.user_account (id, username, password_hash, role, department_id) OVERRIDING SYSTEM VALUE VALUES (3, 'moder_adm', '$2a$10$d0/.EI9ocJfzArHgSVOLd.cEMgf/7wKo8FQdFMzWO4EOfu5xuMewe', 'MODERATOR', 11);
+INSERT INTO public.user_account (id, username, password_hash, role, department_id) OVERRIDING SYSTEM VALUE VALUES (4, 'moder_ltst', '$2a$10$eM3kw8G.5vJUq7irHr8Sb.IruzTDHk4uSAlPL0QKi2IvlsETnRUHm', 'MODERATOR', 6);
+
+
+--
+-- TOC entry 3464 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: department_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.department_id_seq', 14, true);
+
+
+--
+-- TOC entry 3465 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: employee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.employee_id_seq', 15, true);
+
+
+--
+-- TOC entry 3466 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: user_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_account_id_seq', 7, true);
+
+
+-- Completed on 2026-01-22 21:57:17 UTC
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict 9KplO9vug7DnzaGXrETN903hmGkNECQBXtkxpjrSIRMrNcrmAPvAmWgTlYpEIOM
+

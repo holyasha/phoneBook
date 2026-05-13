@@ -1,0 +1,27 @@
+spring:
+  config:
+    import: optional:configtree:/run/secrets/
+
+  datasource:
+    url: jdbc:postgresql://db:5432/phonebook
+    username: phonebook
+    password: ${pg_password}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

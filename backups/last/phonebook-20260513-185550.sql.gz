@@ -1,0 +1,373 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict Hv9b62Fbrzv9KPhCX3x8oHIYDb5asyFqV7BDWe2xSvaUxGVLeCeKvkHgKbcoF1S
+
+-- Dumped from database version 16.13 (Debian 16.13-1.pgdg13+1)
+-- Dumped by pg_dump version 18.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO pg_database_owner;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: department; Type: TABLE; Schema: public; Owner: phonebook
+--
+
+CREATE TABLE public.department (
+    id bigint NOT NULL,
+    full_name character varying(255) NOT NULL,
+    short_name character varying(255) NOT NULL,
+    type character varying(255) NOT NULL,
+    CONSTRAINT chk_department_type CHECK (((type)::text = ANY (ARRAY[('DEPARTMENT'::character varying)::text, ('ADMINISTRATION'::character varying)::text, ('OFFICE'::character varying)::text])))
+);
+
+
+ALTER TABLE public.department OWNER TO phonebook;
+
+--
+-- Name: department_id_seq; Type: SEQUENCE; Schema: public; Owner: phonebook
+--
+
+CREATE SEQUENCE public.department_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.department_id_seq OWNER TO phonebook;
+
+--
+-- Name: department_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phonebook
+--
+
+ALTER SEQUENCE public.department_id_seq OWNED BY public.department.id;
+
+
+--
+-- Name: employee; Type: TABLE; Schema: public; Owner: phonebook
+--
+
+CREATE TABLE public.employee (
+    id bigint NOT NULL,
+    last_name character varying(255) NOT NULL,
+    first_name character varying(255) NOT NULL,
+    middle_name character varying(255),
+    department_id bigint NOT NULL,
+    office_number character varying(255),
+    work_phone character varying(255) NOT NULL,
+    personal_phone character varying(255),
+    email_address character varying(255) NOT NULL,
+    status_note character varying(255),
+    additional_info text,
+    is_active boolean NOT NULL
+);
+
+
+ALTER TABLE public.employee OWNER TO phonebook;
+
+--
+-- Name: employee_id_seq; Type: SEQUENCE; Schema: public; Owner: phonebook
+--
+
+CREATE SEQUENCE public.employee_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.employee_id_seq OWNER TO phonebook;
+
+--
+-- Name: employee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phonebook
+--
+
+ALTER SEQUENCE public.employee_id_seq OWNED BY public.employee.id;
+
+
+--
+-- Name: flyway_schema_history; Type: TABLE; Schema: public; Owner: phonebook
+--
+
+CREATE TABLE public.flyway_schema_history (
+    installed_rank integer NOT NULL,
+    version character varying(50),
+    description character varying(200) NOT NULL,
+    type character varying(20) NOT NULL,
+    script character varying(1000) NOT NULL,
+    checksum integer,
+    installed_by character varying(100) NOT NULL,
+    installed_on timestamp without time zone DEFAULT now() NOT NULL,
+    execution_time integer NOT NULL,
+    success boolean NOT NULL
+);
+
+
+ALTER TABLE public.flyway_schema_history OWNER TO phonebook;
+
+--
+-- Name: user_account; Type: TABLE; Schema: public; Owner: phonebook
+--
+
+CREATE TABLE public.user_account (
+    id bigint NOT NULL,
+    username character varying(100) NOT NULL,
+    password_hash character varying(255) NOT NULL,
+    role character varying(255) NOT NULL,
+    department_id bigint,
+    CONSTRAINT chk_user_role CHECK (((role)::text = ANY (ARRAY[('USER'::character varying)::text, ('MODERATOR'::character varying)::text, ('ADMIN'::character varying)::text])))
+);
+
+
+ALTER TABLE public.user_account OWNER TO phonebook;
+
+--
+-- Name: user_account_id_seq; Type: SEQUENCE; Schema: public; Owner: phonebook
+--
+
+CREATE SEQUENCE public.user_account_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.user_account_id_seq OWNER TO phonebook;
+
+--
+-- Name: user_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phonebook
+--
+
+ALTER SEQUENCE public.user_account_id_seq OWNED BY public.user_account.id;
+
+
+--
+-- Name: department id; Type: DEFAULT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.department ALTER COLUMN id SET DEFAULT nextval('public.department_id_seq'::regclass);
+
+
+--
+-- Name: employee id; Type: DEFAULT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.employee ALTER COLUMN id SET DEFAULT nextval('public.employee_id_seq'::regclass);
+
+
+--
+-- Name: user_account id; Type: DEFAULT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.user_account ALTER COLUMN id SET DEFAULT nextval('public.user_account_id_seq'::regclass);
+
+
+--
+-- Data for Name: department; Type: TABLE DATA; Schema: public; Owner: phonebook
+--
+
+COPY public.department (id, full_name, short_name, type) FROM stdin;
+2	Вычислительные системы, сети и информационная безопасность	ВССиИБ	DEPARTMENT
+3	Железнодорожные станции и транспортные узлы	ЖДСТУ	DEPARTMENT
+5	Логистика и управление транспортными системами	ЛиУТС	DEPARTMENT
+6	Логистические транспортные системы и технологии	ЛТСТ	DEPARTMENT
+7	Управление транспортным бизнесом и интеллектуальные системы	УТБиИС	DEPARTMENT
+8	Управление эксплуатационной работой и безопасностью на транспор...	УЭРиБТ	DEPARTMENT
+9	Химия и инженерная экология	ХиИЭ	DEPARTMENT
+10	Цифровые технологии управления транспортными процессами	ЦТУТП	DEPARTMENT
+11	Администрация	АДМ	ADMINISTRATION
+12	Учебный отдел	УО	OFFICE
+13	Отдел информатизации	ОИ	OFFICE
+\.
+
+
+--
+-- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: phonebook
+--
+
+COPY public.employee (id, last_name, first_name, middle_name, department_id, office_number, work_phone, personal_phone, email_address, status_note, additional_info, is_active) FROM stdin;
+10	Лебедев	Игорь	Николаевич	2	315	9090	+7 (911) 890-12-34	i.lebedev@transport-university.ru	Удаленная работа	pip1	t
+9	Морозова	Ольга	Викторовна	3	218	6723	+7 (911) 789-01-23	o.morozova@transport-university.ru	Активен	jasbfjabs	t
+14	Козлов	Михаил	Анатольевич	2	317	6666	+7 (911) 234-56-78	m.kozlov@transport-university.ru	Дежурный смены	wuw72	t
+2	Смирнова	Мария	Ивановна	5	1553	4444	+7 (911) 345-67-89	m.smirnova@transport-university.ru	в отпуске с 15.09	aboba	t
+5	Соколов	Андрей	Владимирович	9	1316	3125	+7 (911) 678-90-12	a.sokolov@transport-university.ru	на больничном	agadgdag	t
+13	Волкова	Наталья	Сергеевна	8	209	1234	+7 (911) 123-45-67	n.volkova@transport-university.ru	\N	\N	t
+7	Келесбаев	Тимур	Дмитриевич	10	1316	4617	+79992323232	goou.price@gmail.com	322	wannabepizza18	t
+11	Некапов	Олег	Сергеевич	11	1418	1428	+79036757726	olekap99@mail.ru		olekap99	t
+12	Собянин	Всеволод	Анатольевич	12	1213	1337	+79777777777	sob.iuct@yandex.ru		sob44	t
+6	Зубин	Сергей	Анатольевич	6	1318-б	1311	89034561387	abdkf@mail.ru	\N	fnj	t
+1	Иванов	Алексей	Петрович	10	1354	0125	+7 (911) 234-56-78	a.ivanov@transport-university.ru	\N	Ochendobr	t
+\.
+
+
+--
+-- Data for Name: flyway_schema_history; Type: TABLE DATA; Schema: public; Owner: phonebook
+--
+
+COPY public.flyway_schema_history (installed_rank, version, description, type, script, checksum, installed_by, installed_on, execution_time, success) FROM stdin;
+1	1	init	SQL	V1__init.sql	-821553484	postgres	2026-04-20 08:40:51.421319	40	t
+\.
+
+
+--
+-- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: phonebook
+--
+
+COPY public.user_account (id, username, password_hash, role, department_id) FROM stdin;
+5	moder	$2a$10$AJtfQPoId4cTV4n10d0HOePdTJUaYF.dR4h07zDrjvmkzoA8S1PNG	MODERATOR	10
+6	moder2	$2a$10$UQAE.IwQxsF7OCAY4ZRm9.niIlye.RhIW5y5oGYoEwwEuC0g9r3kS	MODERATOR	2
+2	abob	$2a$10$7c2fVtdW8Q4HaUpxOuryDeuaDDfSNtRwyYV8WmGQFeuVT/Q7pidUe	ADMIN	11
+7	admin	$2a$10$WgoZMCdFwOga4RJx6Ir5eO.c53n3vsh4Sse17jWmyycTJ8FkS35RO	ADMIN	\N
+3	moder_adm	$2a$10$d0/.EI9ocJfzArHgSVOLd.cEMgf/7wKo8FQdFMzWO4EOfu5xuMewe	MODERATOR	11
+4	moder_ltst	$2a$10$eM3kw8G.5vJUq7irHr8Sb.IruzTDHk4uSAlPL0QKi2IvlsETnRUHm	MODERATOR	6
+\.
+
+
+--
+-- Name: department_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phonebook
+--
+
+SELECT pg_catalog.setval('public.department_id_seq', 14, true);
+
+
+--
+-- Name: employee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phonebook
+--
+
+SELECT pg_catalog.setval('public.employee_id_seq', 15, true);
+
+
+--
+-- Name: user_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phonebook
+--
+
+SELECT pg_catalog.setval('public.user_account_id_seq', 7, true);
+
+
+--
+-- Name: department department_pkey; Type: CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.department
+    ADD CONSTRAINT department_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: employee employee_pkey; Type: CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: flyway_schema_history flyway_schema_history_pk; Type: CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.flyway_schema_history
+    ADD CONSTRAINT flyway_schema_history_pk PRIMARY KEY (installed_rank);
+
+
+--
+-- Name: employee uk_employee_email; Type: CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT uk_employee_email UNIQUE (email_address);
+
+
+--
+-- Name: employee uk_employee_work_phone; Type: CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT uk_employee_work_phone UNIQUE (work_phone);
+
+
+--
+-- Name: user_account uk_user_username; Type: CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.user_account
+    ADD CONSTRAINT uk_user_username UNIQUE (username);
+
+
+--
+-- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.user_account
+    ADD CONSTRAINT user_account_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: flyway_schema_history_s_idx; Type: INDEX; Schema: public; Owner: phonebook
+--
+
+CREATE INDEX flyway_schema_history_s_idx ON public.flyway_schema_history USING btree (success);
+
+
+--
+-- Name: employee fk_employee_department; Type: FK CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT fk_employee_department FOREIGN KEY (department_id) REFERENCES public.department(id);
+
+
+--
+-- Name: user_account fk_user_department; Type: FK CONSTRAINT; Schema: public; Owner: phonebook
+--
+
+ALTER TABLE ONLY public.user_account
+    ADD CONSTRAINT fk_user_department FOREIGN KEY (department_id) REFERENCES public.department(id);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: pg_database_owner
+--
+
+REVOKE USAGE ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict Hv9b62Fbrzv9KPhCX3x8oHIYDb5asyFqV7BDWe2xSvaUxGVLeCeKvkHgKbcoF1S
+
