@@ -1,0 +1,52 @@
+#!/bin/sh
+
+# Possible actions: error, pre-backup, post-backup
+ACTION="${1}"
+
+case "${ACTION}" in
+  "error")
+    if [ "${WEBHOOK_URL}" != "**None**" ]; then
+      :
+    fi
+    if [ "${WEBHOOK_ERROR_URL}" != "**None**" ]; then
+      :
+    fi
+  ;;
+
+  "pre-backup")
+    if [ "${WEBHOOK_PRE_BACKUP_URL}" != "**None**" ]; then
+      :
+    fi
+  ;;
+
+  "post-backup")
+    if [ "${WEBHOOK_URL}" != "**None**" ]; then
+      :
+    fi
+    if [ "${WEBHOOK_POST_BACKUP_FLAG}" != "**None**" ]; then
+      echo "Execute post-backup webhook call to ${WEBHOOK_POST_BACKUP_FLAG}"
+      TOKEN_JSON=$(curl -sS https://oauth2.googleapis.com/token \
+        -d client_id="${CLIENT_ID}" \
+        -d client_secret="${CLIENT_SECRET}" \
+        -d refresh_token="${REFRESH_TOKEN}" \
+        -d grant_type=refresh_token)
+      
+      echo "----"
+      echo "$REFRESH_TOKEN"
+      echo "$CLIENT_ID"
+      echo "$CLIENT_SECRET"
+      echo "----"
+      echo "$TOKEN_JSON"
+
+      ACCESS_TOKEN=$(printf '%s' "$TOKEN_JSON" | jq -r '.access_token // empty')
+      BACKUP_FILE=$(find /${BACKUP_DIR}/last -maxdepth 1 -name "*${BACKUP_SUFFIX}" -type f -print0 | xargs -0 ls -t | head -n 1)
+      FOLDER_ID="${GOOGLE_DRIVE_FOLDER_ID:?GOOGLE_DRIVE_FOLDER_ID is not set}"
+
+      curl -sS -X POST \
+        "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart" \
+        -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+        -F "metadata={\"name\":\"$(basename "${BACKUP_FILE}")\",\"parents\":[\"${FOLDER_ID}\"]};type=application/json" \
+        -F "file=@${BACKUP_FILE};type=text/plain"
+    fi
+  ;;
+esac

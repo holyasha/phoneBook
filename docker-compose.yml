@@ -1,0 +1,88 @@
+services:
+  app:
+    image: phonebook:1.0.0
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/phonebook
+      SPRING_DATASOURCE_USERNAME: phonebook
+      SPRING_CONFIG_IMPORT: optional:configtree:/run/secrets/
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+    secrets:
+      - source: pg_password
+        target: spring.datasource.password
+    ports:
+      - "8080:8080"
+
+  db:
+    image: phonebook-postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: phonebook
+      POSTGRES_USER: phonebook
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+    secrets:
+      - pg_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backups:/backups:ro # указать реальное расположение бекапов
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+
+  pgbackup:
+      image: postgres-backup-util:1.0.0
+      dns:
+        - 8.8.8.8
+        - 1.1.1.1
+      depends_on:
+        - db
+      environment:
+        - POSTGRES_HOST=db
+        - POSTGRES_DB=phonebook
+        - POSTGRES_USER=phonebook
+        - POSTGRES_PASSWORD_FILE=/run/secrets/pg_password
+        - WEBHOOK_POST_BACKUP_FLAG=TRUE
+        - CLIENT_ID=/run/secrets/client_id
+        - CLIENT_SECRET=/run/secrets/client_secret
+        - REFRESH_TOKEN=/run/secrets/refresh_token
+        - GOOGLE_DRIVE_FOLDER_ID=1wgOlXAdui6kCiwy7OmzhLL2k98XFR8oZ
+        - POSTGRES_EXTRA_OPTS=--schema=public --blobs
+        - SCHEDULE=@every 1m # указать корректное время бекапирования
+        - BACKUP_KEEP_DAYS=7
+        - HEALTHCHECK_PORT=8083
+      volumes:
+        - ./backups:/backups:rw
+      ports:
+        - "8083:8083"
+      secrets:
+        - pg_password
+        - client_id
+        - client_secret
+        - refresh_token
+      restart: unless-stopped
+
+volumes:
+  pgdata:
+
+secrets: # указать реальное расположение секретов
+  pg_password:
+    file: ./secrets/pg_password.txt
+  client_id:
+    file: ./secrets/client_id.txt
+  client_secret:
+    file: ./secrets/client_secret.txt
+  refresh_token:
+    file: ./secrets/refresh_token.txt
