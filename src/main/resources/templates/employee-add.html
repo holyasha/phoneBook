@@ -15,7 +15,7 @@
 
             <div class="grid">
                 <label for="firstName">
-                    Имя
+                    Имя*
                     <input th:field="*{firstName}"
                            th:errorclass="is-invalid"
                            type="text"
@@ -27,7 +27,7 @@
                 </label>
 
                 <label for="lastName">
-                    Фамилия
+                    Фамилия*
                     <input th:field="*{lastName}"
                            th:errorclass="is-invalid"
                            type="text"
@@ -44,16 +44,14 @@
                            type="text"
                            id="middleName"
                            placeholder="Введите Отчество"/>
-                    <!-- <small th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"
-                           class="text-danger"></small> -->
                 </label>
             </div>
 
             <div sec:authorize="hasRole('ADMIN')">
                 <label for="department">
-                Отдел
+                Подразделение*
                 <select id="department" th:field="*{departmentId}" required>
-                    <option value="">Выберите отдел...</option>
+                    <option value="">Выберите подразделение...</option>
                     <option th:each="d : ${departments}"
                             th:value="${d.id}"
                             th:text="${d.shortName}"></option>
@@ -63,7 +61,7 @@
 
             <div sec:authorize="hasRole('MODERATOR')">
                 <label for="department">
-                Отдел
+                Подразделение*
                 <select id="department" th:field="*{departmentId}" disabled>
             <option th:each="d : ${departments}"
                     th:if="${d.id == userDepartmentId}"
@@ -76,22 +74,22 @@
             </label>
             </div>
 
-            <label for="officeNumber">Кабинет
+            <label for="officeNumber">Кабинет*
                 <input th:field="*{officeNumber}" id="officeNumber"
                 placeholder="Введите кабинет" />
             </label>
 
-            <label for="workPhone">Рабочий телефон
+            <label for="workPhone">Рабочий телефон*
                 <input th:field="*{workPhone}" id="workPhone"
                 placeholder="Введите рабочий номер(4 цифры)" />
             </label>
 
-            <label for="personalPhone">Личный телефон
+            <label for="personalPhone">Личный телефон*
                 <input th:field="*{personalPhone}" id="personalPhone"
                 placeholder="Введите личный номер телефона" />
             </label>
 
-            <label for="email">Email
+            <label for="email">Email*
                 <input th:field="*{email}" id="email"
                 placeholder="Введите email" />
             </label>

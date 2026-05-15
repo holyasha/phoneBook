@@ -5,7 +5,7 @@
 <div th:replace="fragments/navbar"></div>
 <main class="container">
     <hgroup>
-        <h1>Все отделы</h1>
+        <h1>Все подразделения</h1>
     </hgroup>
 
     <div id="resultsContainer">
@@ -28,14 +28,14 @@
                 <div>
                     <form th:action="@{/departments/delete/{id}(id=${department.id})}"
                           th:method="delete"
-                          onsubmit="return confirm('Вы уверены, что хотите удалить этот отдел?')">
-                        <button type="submit" class="secondary">Удалить отдел</button>
+                          onsubmit="return confirm('Вы уверены, что хотите удалить это подразделение?')">
+                        <button type="submit" class="secondary">Удалить подразделение</button>
                     </form>
                 </div>
             </div>
         </div>
         <p th:if="${#lists.isEmpty(allDepartments)}" class="text-center">
-            <em>Отделы не найдены. Добавьте новые отделы, чтобы начать!</em>
+            <em>Подразделения не найдены. Добавьте новые подразделения, чтобы начать!</em>
         </p>
 
     </div>

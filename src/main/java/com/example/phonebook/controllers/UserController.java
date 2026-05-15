@@ -59,7 +59,7 @@ public class UserController {
                     .filter(d->d.getId().equals(department))
                     .findFirst()
                     .map(ShowDepartmentInfoDto::getShortName)
-                    .orElse("Неизвестный отдел");
+                    .orElse("Неизвестное подразделение");
                 model.addAttribute("selectedDepartment", selectedDepartmentName);   
             }
         } else if(department != null) {
@@ -67,7 +67,7 @@ public class UserController {
                     .filter(d->d.getId().equals(department))
                     .findFirst()
                     .map(ShowDepartmentInfoDto::getShortName)
-                    .orElse("Неизвестный отдел");
+                    .orElse("Неизвестное подразделение");
                 model.addAttribute("selectedDepartment", selectedDepartmentName);   
             } else {
                 model.addAttribute("allUsers", userService.allUsers());

@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ShowUserDto> searchUsersInDepartment(String searchTerm, Long departmentId) {
-        log.debug("Поиск сотрудников в отделе {} по запросу: {}", departmentId, searchTerm);
+        log.debug("Поиск сотрудников в подразделении {} по запросу: {}", departmentId, searchTerm);
         List<ShowUserDto> results = userRepository.searchUsersInDepartment(searchTerm, departmentId).stream()
         .map(user -> mapper.map(user, ShowUserDto.class))
         .collect(Collectors.toList());

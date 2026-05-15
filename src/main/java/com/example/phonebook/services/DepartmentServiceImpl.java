@@ -31,11 +31,11 @@
      @Override
      @Cacheable(value = "departments", key = "'all'")
      public List<ShowDepartmentInfoDto> allDepartments() {
-         log.debug("Получение списка всех отделов");
+         log.debug("Получение списка всех подразделений");
          List<ShowDepartmentInfoDto> departments = departmentRepository.findAll().stream()
                  .map(department -> mapper.map(department, ShowDepartmentInfoDto.class))
                  .collect(Collectors.toList());
-         log.info("Найдено отделов: {}", departments.size());
+         log.info("Найдено подразделений: {}", departments.size());
          return departments;
      }
 
@@ -45,7 +45,7 @@
          List<ShowDepartmentInfoDto> results = departmentRepository.findByShortName(searchTerm).stream()
                  .map(department -> mapper.map(department, ShowDepartmentInfoDto.class))
                  .collect(Collectors.toList());
-         log.info("По запросу '{}' найдено отделов: {}", searchTerm, results.size());
+         log.info("По запросу '{}' найдено подразделений: {}", searchTerm, results.size());
          return results;
      }
 

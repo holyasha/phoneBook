@@ -69,9 +69,9 @@
             </fieldset>
 
             <label for="department">
-                Отдел
+                Подразделение
                 <select id="department" th:field="*{departmentId}" required>
-                    <option value="">Выберите отдел...</option>
+                    <option value="">Выберите подразделение...</option>
                     <option th:each="d : ${departments}"
                             th:value="${d.id}"
                             th:text="${d.shortName}"></option>

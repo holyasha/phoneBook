@@ -6,8 +6,8 @@
 <main class="container">
     <article style="max-width: 700px; margin: 0 auto;">
         <hgroup>
-            <h1>Добавление отдела</h1>
-            <p>Заполните информацию об отделе</p>
+            <h1>Добавление подразделения</h1>
+            <p>Заполните информацию об подразделении</p>
         </hgroup>
         <form th:action="@{/departments/add}"
               th:method="post"
@@ -63,7 +63,7 @@
                     <small th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger"></small>
                 </fieldset>
 
-            <button type="submit">Добавить отдел</button>
+            <button type="submit">Добавить подразделение</button>
 
         </form>
 

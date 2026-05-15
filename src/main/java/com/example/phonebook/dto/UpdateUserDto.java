@@ -13,7 +13,7 @@ public class UpdateUserDto {
     @NotNull(message = "Выберите роль!")
     private UserRole role;
 
-    @NotNull(message = "Выберите отдел!")
+    @NotNull(message = "Выберите подразделение!")
     private Long departmentId;
     
     public Long getId() {

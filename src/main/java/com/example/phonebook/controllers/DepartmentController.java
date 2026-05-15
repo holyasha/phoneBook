@@ -103,7 +103,7 @@ public class DepartmentController {
             departmentService.deleteDepartment(id);
             redirectAttributes.addFlashAttribute("successMessage", "Подразделение успешно удалено!");
         } catch (Exception e) {
-            log.error("Ошибка при удалении отдела", e);
+            log.error("Ошибка при удалении подразделения", e);
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при удалении: " + e.getMessage());
         }
         return "redirect:/departments/all";

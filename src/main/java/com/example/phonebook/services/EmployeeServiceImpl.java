@@ -50,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Department department = departmentRepository.findById(employeeDto.getDepartmentId()).orElse(null);
         if (department == null) {
-            log.warn("Попытка добавить сотрудника в несуществующий отдел");
+            log.warn("Попытка добавить сотрудника в несуществующее подразделение");
             //throw new EmployeeNotFoundException("Сотрудник с именем '" + employeeFullName + "' не найден");
         }
         Employee employee = mapper.map(employeeDto, Employee.class);
@@ -74,11 +74,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<ShowEmployeeDto> findEmployeesByDepartment(Long departmentId) {
-        log.debug("Получение сотрудников отдела: {}", departmentId);
+        log.debug("Получение сотрудников подразделения: {}", departmentId);
         List<ShowEmployeeDto> employees = employeeRepository.findByDepartmentId(departmentId).stream()
             .map(employee -> mapper.map(employee, ShowEmployeeDto.class))
             .collect(Collectors.toList());
-        log.debug("Найдено сотрудников в отделе: {}", employees.size());
+        log.debug("Найдено сотрудников в подразделении: {}", employees.size());
     return employees;
 }
 
@@ -97,11 +97,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<ShowEmployeeDto> searchEmployeesInDepartment(String searchTerm, Long departmentId) {
-        log.debug("Поиск сотрудников в отделе {} по запросу: {}", departmentId, searchTerm);
+        log.debug("Поиск сотрудников в подразделении {} по запросу: {}", departmentId, searchTerm);
         List<ShowEmployeeDto> results = employeeRepository.searchActiveEmployeesInDepartment(searchTerm, departmentId).stream()
             .map(employee -> mapper.map(employee, ShowEmployeeDto.class))
             .collect(Collectors.toList());
-        log.info("По запросу '{}' в отделе {} найдено сотрудников: {}", searchTerm, departmentId, results.size());        
+        log.info("По запросу '{}' в подразделении {} найдено сотрудников: {}", searchTerm, departmentId, results.size());        
         return results;
     }
 

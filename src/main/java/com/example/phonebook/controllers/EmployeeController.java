@@ -102,7 +102,7 @@ public class EmployeeController {
                         .filter(d -> d.getId().equals(department))
                         .findFirst()
                         .map(ShowDepartmentInfoDto::getShortName)
-                        .orElse("Неизвестный отдел");
+                        .orElse("Неизвестное подразделение");
                 model.addAttribute("selectedDepartmentName", selectedDepartmentName);
             }
 
@@ -114,7 +114,7 @@ public class EmployeeController {
                     .filter(d -> d.getId().equals(department))
                     .findFirst()
                     .map(ShowDepartmentInfoDto::getShortName)
-                    .orElse("Неизвестный отдел");
+                    .orElse("Неизвестное подразделение");
             model.addAttribute("selectedDepartmentName", selectedDepartmentName);
 
         } else {
