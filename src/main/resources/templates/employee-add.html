@@ -20,19 +20,6 @@
 
                         <!-- Имя, Фамилия, Отчество в сетке -->
                         <div class="row g-3 mb-3">
-                            <div class="col-md-4">
-                                <label for="firstName" class="form-label fw-bold">Имя <span class="text-danger">*</span></label>
-                                <input th:field="*{firstName}"
-                                       th:errorclass="is-invalid"
-                                       type="text"
-                                       class="form-control"
-                                       id="firstName"
-                                       placeholder="Введите имя"
-                                       required>
-                                <div th:if="${#fields.hasErrors('firstName')}"
-                                     th:errors="*{firstName}"
-                                     class="invalid-feedback"></div>
-                            </div>
 
                             <div class="col-md-4">
                                 <label for="lastName" class="form-label fw-bold">Фамилия <span class="text-danger">*</span></label>
@@ -45,6 +32,20 @@
                                        required>
                                 <div th:if="${#fields.hasErrors('lastName')}"
                                      th:errors="*{lastName}"
+                                     class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="firstName" class="form-label fw-bold">Имя <span class="text-danger">*</span></label>
+                                <input th:field="*{firstName}"
+                                       th:errorclass="is-invalid"
+                                       type="text"
+                                       class="form-control"
+                                       id="firstName"
+                                       placeholder="Введите имя"
+                                       required>
+                                <div th:if="${#fields.hasErrors('firstName')}"
+                                     th:errors="*{firstName}"
                                      class="invalid-feedback"></div>
                             </div>
 

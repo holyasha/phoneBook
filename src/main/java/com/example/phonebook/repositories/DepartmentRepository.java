@@ -15,6 +15,9 @@ import java.util.Optional;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
+    @Query("SELECT d FROM Department d ORDER BY d.shortName")
+    List<Department> findAll();
+
     List<Department> findByShortName(String shortName);
 
     boolean existsByShortName(String shortName);

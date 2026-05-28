@@ -14,6 +14,18 @@
               th:object="${employeeModel}">
 
             <div class="grid">
+
+              <label for="lastName">
+                    Фамилия
+                    <input th:field="*{lastName}"
+                           th:errorclass="is-invalid"
+                           type="text"
+                           id="lastName"
+                           placeholder="Введите фамилию"
+                           required/>
+                    <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></small>
+                </label>
+                
                 <label for="firstName">
                     Имя
                     <input th:field="*{firstName}"
@@ -24,17 +36,6 @@
                            required/>
                     <small th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
                            class="text-danger"></small>
-                </label>
-
-                <label for="lastName">
-                    Фамилия
-                    <input th:field="*{lastName}"
-                           th:errorclass="is-invalid"
-                           type="text"
-                           id="lastName"
-                           placeholder="Введите фамилию"
-                           required/>
-                    <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></small>
                 </label>
 
                 <label for="middleName">
