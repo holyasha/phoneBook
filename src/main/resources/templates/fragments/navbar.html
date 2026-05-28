@@ -1,10 +1,10 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm"
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm py-2"
      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
      xmlns:th="http://www.thymeleaf.org">
-    <div class="container-fluid px-2">
+    <div class="container-fluid px-3">
         <div class="d-flex justify-content-between align-items-center w-100">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-                <img th:src="@{/logo.png}" alt="Логотип ИУЦТ" height="30">
+            <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="/">
+                <img th:src="@{/logo.png}" alt="Логотип ИУЦТ" height="45">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                 <span class="navbar-toggler-icon"></span>
@@ -15,42 +15,43 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <!-- Сотрудники -->
                 <li class="nav-item dropdown" sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-size: 0.95rem;">
                         Сотрудники
                     </a>
                     <ul class="dropdown-menu p-0 m-0" style="min-width: 160px;">
-                        <li><a class="dropdown-item py-1 px-3" href="/employees/all">Список сотрудников</a></li>
-                        <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')"><a class="dropdown-item py-1 px-3" href="/employees/add">Добавить сотрудника</a></li>
+                        <li><a class="dropdown-item py-2 px-3" href="/employees/all" style="font-size: 0.9rem;">Список сотрудников</a></li>
+                        <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')"><a class="dropdown-item py-2 px-3" href="/employees/add" style="font-size: 0.9rem;">Добавить сотрудника</a></li>
                         <li sec:authorize="hasRole('ADMIN')"><hr class="my-0"></li>
-                        <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item py-1 px-3 text-danger" href="/employees/inactive">Удалённые</a></li>
+                        <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item py-2 px-3 text-danger" href="/employees/inactive" style="font-size: 0.9rem;">Удалённые</a></li>
                     </ul>
                 </li>
 
                 <!-- Пользователи -->
                 <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-size: 0.95rem;">
                         Пользователи
                     </a>
                     <ul class="dropdown-menu p-0 m-0" style="min-width: 160px;">
-                        <li><a class="dropdown-item py-1 px-3" href="/moderators/all">Список пользователей</a></li>
-                        <li><a class="dropdown-item py-1 px-3" href="/users/register">Добавить пользователя</a></li>
+                        <li><a class="dropdown-item py-2 px-3" href="/moderators/all" style="font-size: 0.9rem;">Список пользователей</a></li>
+                        <li><a class="dropdown-item py-2 px-3" href="/users/register" style="font-size: 0.9rem;">Добавить пользователя</a></li>
                     </ul>
                 </li>
 
                 <!-- Подразделения -->
                 <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-size: 0.95rem;">
                         Подразделения
                     </a>
                     <ul class="dropdown-menu p-0 m-0" style="min-width: 160px;">
-                        <li><a class="dropdown-item py-1 px-3" href="/departments/all">Список подразделений</a></li>
-                        <li><a class="dropdown-item py-1 px-3" href="/departments/add">Добавить подразделение</a></li>
+                        <li><a class="dropdown-item py-2 px-3" href="/departments/all" style="font-size: 0.9rem;">Список подразделений</a></li>
+                        <li><a class="dropdown-item py-2 px-3" href="/departments/add" style="font-size: 0.9rem;">Добавить подразделение</a></li>
                     </ul>
                 </li>
 
+                <!-- Выход -->
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <form th:method="post" th:action="@{/users/logout}">
-                        <button type="submit" class="btn btn-outline-light btn-sm ms-lg-2 mt-2 mt-lg-0 w-100">
+                        <button type="submit" class="btn btn-outline-light btn-sm ms-lg-2 mt-2 mt-lg-0 w-100" style="font-size: 0.85rem; padding: 0.3rem 0.7rem;">
                             Выйти
                         </button>
                     </form>

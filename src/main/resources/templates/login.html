@@ -15,7 +15,6 @@
 
                 <div class="card-body p-4">
                     <form th:action="@{/users/login}" th:method="post">
-                        <!-- Логин -->
                         <div class="mb-3">
                             <label for="username" class="form-label fw-bold">Логин</label>
                             <input id="username"
@@ -27,7 +26,6 @@
                                    required>
                         </div>
 
-                        <!-- Пароль -->
                         <div class="mb-3">
                             <label for="password" class="form-label fw-bold">Пароль</label>
                             <input id="password"
@@ -38,17 +36,14 @@
                                    required>
                         </div>
 
-                        <!-- Ошибка авторизации -->
                         <div th:if="${badCredentials}" class="alert alert-danger py-2 mb-3">
                             <i class="bi bi-exclamation-triangle-fill"></i> Неверный логин или пароль.
                         </div>
 
-                        <!-- Кнопка входа -->
                         <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
                             <i class="bi bi-box-arrow-in-right"></i> Войти
                         </button>
 
-                        <!-- Запомнить меня (на отдельной строке) -->
                         <div class="form-check">
                             <input type="checkbox"
                                    name="remember-me"
