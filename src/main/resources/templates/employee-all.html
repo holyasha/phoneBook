@@ -3,110 +3,153 @@
 <head th:replace="fragments/head"/>
 <body>
 <div th:replace="fragments/navbar"></div>
-<main class="container">
 
-    <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;">
-        <div style="display: flex; flex-wrap: wrap; gap: 5px; align-items: center;">
-            <span style="font-weight: bold; margin-right: 5px;">Подразделение:</span>
-            <a href="/employees/all"
-               th:class="${selectedDepartment == null} ? 'department-btn active' : 'department-btn'"
-               style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">
-                Все
-            </a>
+<main class="container my-4">
+    <!-- Фильтры и поиск -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
+                        <!-- Фильтр по подразделениям -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                            <span class="fw-bold">Подразделение:</span>
+                            <a href="/employees/all"
+                               th:class="${selectedDepartment == null} ? 'btn btn-primary btn-sm' : 'btn btn-outline-secondary btn-sm'">
+                                Все
+                            </a>
+                            <a th:each="dept : ${departments}"
+                               th:href="@{/employees/all?department={id}(id=${dept.id})}"
+                               th:class="${selectedDepartment != null and selectedDepartment == dept.id} ? 'btn btn-primary btn-sm' : 'btn btn-outline-secondary btn-sm'"
+                               th:text="${dept.shortName}">
+                            </a>
+                        </div>
 
-            <a th:each="dept : ${departments}"
-               th:href="@{/employees/all?department={id}(id=${dept.id})}"
-               th:class="${selectedDepartment != null and selectedDepartment == dept.id} ? 'department-btn active' : 'department-btn'"
-               th:text="${dept.shortName}"
-               style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">
-            </a>
-        </div>
-    </div>
-    <form method="get" action="/employees/all" id="searchForm" style="flex-grow: 1">
-        <div style="display: flex; gap: 5px;">
-            <input type="search"
-                   name="search"
-                   th:value="${search}"
-                   placeholder="Поиск сотрудников..."
-                   th:attr="placeholder=${selectedDepartment != null} ? 'Поиск в подразделении' : 'Поиск сотрудников...'"
-                   aria-label="Поиск"
-                   id="searchInput"
-                   autocomplete="off"
-                   style="flex-grow: 1;">
-            <input type="hidden"
-                   name="department"
-                   th:value="${selectedDepartment}"
-                   id="departmentHidden">
-        </div>
-    </form>
-
-    <div id="resultsContainer">
-        <div style="
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            margin-top: 20px;
-        ">
-            <div th:each="e : ${allEmployees}" class="card" style="margin-bottom: 0;">
-                <h3><strong th:text="${e.lastName} + ' ' + ${e.firstName} + ' ' + ${e.middleName}"></strong></h3>
-                <h4><strong th:text="${e.departmentShortName}"></strong></h4>
-                <p th:if="${e.workPhone}">
-                    Рабочий телефон:
-                    <a th:href="'tel:' + ${#strings.replace(e.workPhone, ' ', '')}"
-                       th:text="${e.workPhone}"
-                       style="font-weight: bold; text-decoration: none;"></a>
-                </p>
-                <p th:if="${e.personalPhone}">
-                    Личный телефон:
-                    <a th:href="'tel:' + ${#strings.replace(e.personalPhone, ' ', '')}"
-                       th:text="${e.personalPhone}"
-                       style="font-weight: bold; text-decoration: none;"></a>
-                </p>
-                <p th:if="${e.email}">
-                    Email:
-                    <a th:href="'mailto:' + ${e.email}"
-                       th:text="${e.email}"
-                       style="font-weight: bold; text-decoration: none;"></a>
-                </p>
-                <p>
-                    Аудитория:
-                    <span th:text="${e.officeNumber}" style="font-weight: bold;"></span>
-                </p>
-                <p th:if="${e.additionalInfo}">
-                    Telegram:
-                    <a th:href="'https://t.me/' + ${e.additionalInfo}"
-                       th:text="'@' + ${e.additionalInfo}"
-                       style="font-weight: bold; text-decoration: none;"></a>
-                </p>
-                <p th:if="${e.statusNote}">
-                    Дополнительная информация:
-                    <span th:text="${e.statusNote}" style="font-weight: bold;"></span>
-                </p>
-
-                <div th:if="${isAdmin or (isModerator and userDepartmentId == e.departmentId)}">
-                    <form th:action="@{/employees/update/{id}(id=${e.id})}"
-                          th:method="get">
-                        <button type="submit" class="primary">Изменить</button>
-                    </form>
-
-                    <form th:action="@{/employees/delete/{id}(id=${e.id})}"
-                          th:method="post"
-                          onsubmit="return confirm('Вы уверены, что хотите удалить этого сотрудника?')">
-                        <button type="submit" class="secondary">Удалить сотрудника</button>
-                    </form>
+                        <!-- Поиск -->
+                        <form method="get" action="/employees/all" id="searchForm" class="flex-grow-1">
+                            <div class="input-group">
+                                <input type="search"
+                                       name="search"
+                                       th:value="${search}"
+                                       placeholder="Поиск сотрудников..."
+                                       th:attr="placeholder=${selectedDepartment != null} ? 'Поиск в подразделении...' : 'Поиск сотрудников...'"
+                                       class="form-control"
+                                       id="searchInput"
+                                       autocomplete="off">
+                                <input type="hidden"
+                                       name="department"
+                                       th:value="${selectedDepartment}"
+                                       id="departmentHidden">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-search"></i> Найти
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <p th:if="${#lists.isEmpty(allEmployees)}" class="text-center">
-            <em> Введите запрос в поиск или выберите подразделение.
+    </div>
+
+    <!-- Результаты поиска -->
+    <div id="resultsContainer">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div th:each="e : ${allEmployees}" class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <!-- ФИО сотрудника -->
+                        <h5 class="card-title text-primary fw-bold mb-2"
+                            th:text="${e.lastName} + ' ' + ${e.firstName} + ' ' + ${e.middleName}">
+                        </h5>
+
+                        <!-- Подразделение -->
+                        <h6 class="card-subtitle text-muted mb-3"
+                            th:text="${e.departmentShortName}">
+                        </h6>
+
+                        <!-- Контактная информация -->
+                        <div class="mt-2" style="font-size: 0.9rem;">
+                            <p th:if="${e.officeNumber}" class="mb-1">
+                                <i class="bi bi-door-closed text-secondary"></i>
+                                <strong>Кабинет:</strong> <span th:text="${e.officeNumber}"></span>
+                            </p>
+                            <p th:if="${e.workPhone}" class="mb-1">
+                                <i class="bi bi-telephone text-secondary"></i>
+                                <strong>Рабочий:</strong>
+                                <a th:href="'tel:' + ${#strings.replace(e.workPhone, ' ', '')}"
+                                   th:text="${e.workPhone}"
+                                   class="text-decoration-none">
+                                </a>
+                            </p>
+                            <p th:if="${e.personalPhone}" class="mb-1">
+                                <i class="bi bi-phone text-secondary"></i>
+                                <strong>Личный:</strong>
+                                <a th:href="'tel:' + ${#strings.replace(e.personalPhone, ' ', '')}"
+                                   th:text="${e.personalPhone}"
+                                   class="text-decoration-none">
+                                </a>
+                            </p>
+                            <p th:if="${e.email}" class="mb-1">
+                                <i class="bi bi-envelope text-secondary"></i>
+                                <strong>Email:</strong>
+                                <a th:href="'mailto:' + ${e.email}"
+                                   th:text="${e.email}"
+                                   class="text-decoration-none">
+                                </a>
+                            </p>
+                            <p th:if="${e.additionalInfo}" class="mb-1">
+                                <i class="bi bi-telegram text-secondary"></i>
+                                <strong>Telegram:</strong>
+                                <a th:href="'https://t.me/' + ${e.additionalInfo}"
+                                   th:text="'@' + ${e.additionalInfo}"
+                                   class="text-decoration-none">
+                                </a>
+                            </p>
+                            <p th:if="${e.statusNote}" class="mb-1">
+                                <i class="bi bi-info-circle text-secondary"></i>
+                                <strong>Доп. инфо:</strong>
+                                <span th:text="${e.statusNote}" class="text-muted"></span>
+                            </p>
+                        </div>
+
+                        <!-- Кнопки действий -->
+                        <div th:if="${isAdmin or (isModerator and userDepartmentId == e.departmentId)}"
+                             class="mt-3 pt-2 border-top">
+                            <div class="d-flex gap-2">
+                                <form th:action="@{/employees/update/{id}(id=${e.id})}"
+                                      th:method="get" class="flex-grow-1">
+                                    <button type="submit" class="btn btn-warning btn-sm w-100">
+                                        <i class="bi bi-pencil"></i> Изменить
+                                    </button>
+                                </form>
+                                <form th:action="@{/employees/delete/{id}(id=${e.id})}"
+                                      th:method="post"
+                                      onsubmit="return confirm('Вы уверены, что хотите удалить сотрудника?')"
+                                      class="flex-grow-1">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                                        <i class="bi bi-trash"></i> Удалить
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Сообщение, если нет сотрудников -->
+        <div th:if="${#lists.isEmpty(allEmployees)}" class="alert alert-info text-center mt-4">
+            <i class="bi bi-people fs-1"></i>
+            <h4 class="mt-2">Сотрудники не найдены</h4>
+            <p class="mb-0">
                 <span th:if="${selectedDepartment != null}">
                     В выбранном подразделении нет сотрудников.
                 </span>
                 <span th:unless="${selectedDepartment != null}">
-
+                    Введите запрос в поиск или выберите подразделение.
                 </span>
-            </em>
-        </p>
+            </p>
+        </div>
     </div>
 </main>
 
@@ -114,81 +157,59 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-     const searchInput = document.getElementById('searchInput');
-     const resultsContainer = document.getElementById('resultsContainer');
-     const departmentHidden = document.getElementById('departmentHidden');
-     let debounceTimer;
+        const searchInput = document.getElementById('searchInput');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const departmentHidden = document.getElementById('departmentHidden');
+        let debounceTimer;
 
-     function performSearch() {
-         const cursorPosition = searchInput.selectionStart;
-         const searchValue = searchInput.value;
+        function performSearch() {
+            const cursorPosition = searchInput.selectionStart;
+            const searchValue = searchInput.value;
+            const url = new URL(window.location.origin + '/employees/all');
 
-         const url = new URL(window.location.origin + '/employees/all');
+            if (searchValue.trim() !== '') {
+                url.searchParams.set('search', searchValue);
+            }
+            if (departmentHidden && departmentHidden.value) {
+                url.searchParams.set('department', departmentHidden.value);
+            }
 
-         if (searchValue.trim() !== '') {
-             url.searchParams.set('search', searchValue);
-         }
+            fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newResultsContainer = doc.getElementById('resultsContainer');
+                if (newResultsContainer) {
+                    resultsContainer.innerHTML = newResultsContainer.innerHTML;
+                }
+                searchInput.focus();
+                searchInput.setSelectionRange(cursorPosition, cursorPosition);
+            })
+            .catch(error => console.error('Ошибка при поиске:', error));
+        }
 
-         if (departmentHidden && departmentHidden.value) {
-             url.searchParams.set('department', departmentHidden.value);
-         }
+        searchInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            if (this.value.trim() === '') {
+                performSearch();
+            } else {
+                debounceTimer = setTimeout(() => performSearch(), 500);
+            }
+        });
 
-         console.log('Fetching URL:', url.toString());
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                clearTimeout(debounceTimer);
+                performSearch();
+            }
+        });
 
-         fetch(url, {
-             headers: {
-                 'X-Requested-With': 'XMLHttpRequest'
-             }
-         })
-         .then(response => {
-             if (!response.ok) {
-                 throw new Error('Network response was not ok');
-             }
-             return response.text();
-         })
-         .then(html => {
-             const parser = new DOMParser();
-             const doc = parser.parseFromString(html, 'text/html');
-
-             const newResultsContainer = doc.getElementById('resultsContainer');
-
-             if (newResultsContainer) {
-                 resultsContainer.innerHTML = newResultsContainer.innerHTML;
-             }
-
-             searchInput.focus();
-             searchInput.setSelectionRange(cursorPosition, cursorPosition);
-         })
-         .catch(error => {
-             console.error('Ошибка при поиске:', error);
-         });
-     }
-
-     searchInput.addEventListener('input', function() {
-         clearTimeout(debounceTimer);
-
-         debounceTimer = setTimeout(() => {
-             performSearch();
-         }, 3000); // 3 секунды паузы
-     });
-
-     // Поиск при нажатии Enter
-     searchInput.addEventListener('keydown', function(e) {
-         if (e.key === 'Enter') {
-             e.preventDefault();
-             clearTimeout(debounceTimer);
-             performSearch();
-         }
-     });
-     searchInput.addEventListener('input', function() {
-         if (this.value.trim() === '') {
-             performSearch(); // Для очистки результатов при пустом поле
-         }
-     });
-
-     searchInput.focus();
-     updatePlaceholder();
- });
+        searchInput.focus();
+    });
 </script>
 </body>
 </html>

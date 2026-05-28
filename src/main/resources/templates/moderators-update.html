@@ -3,63 +3,77 @@
 <head th:replace="fragments/head"/>
 <body>
 <div th:replace="fragments/navbar"></div>
-<main class="container">
-    <article style="max-width: 700px; margin: 0 auto;">
-        <hgroup>
-            <h1>Изменение сотрудника</h1>
-        </hgroup>
-        <form th:action="@{'/moderators/update/' + ${id}}"
-              th:method="post"
-              th:object="${userModel}">
 
-            <div>
-                <label for="username">
-                    Имя пользователя
-                    <input th:field="*{username}"
-                           th:errorclass="is-invalid"
-                           type="text"
-                           id="username"
-                           placeholder="Введите username"
-                           required/>
-                    <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
-                           class="text-danger"></small>
-                </label>
+<main class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Изменение сотрудника</h3>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{'/moderators/update/' + ${id}}"
+                          th:method="post"
+                          th:object="${userModel}">
 
-            <label for="department">
-                Подразделение
-                <select id="department" th:field="*{departmentId}">
-                    <option value="">Выберите подразделение...</option>
-                    <option th:each="d : ${departments}"
-                            th:value="${d.id}"
-                            th:text="${d.shortName}"></option>
-                </select>
-                <small th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"
-                       class="text-danger"></small>
-            </label>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Имя пользователя</label>
+                            <input th:field="*{username}"
+                                   type="text"
+                                   class="form-control"
+                                   required>
+                            <div th:errors="*{username}" class="text-danger small"></div>
+                        </div>
 
-            <fieldset>
-                <legend>Выберите роль(наличие прав)</legend>
-                <label>
-                    <input th:field="*{role}"
-                           th:value="USER"
-                           type="radio"
-                           name="role"/>
-                    Без функционала (USER)
-                </label>
-                <label>
-                    <input th:field="*{role}"
-                           th:value="MODERATOR"
-                           type="radio"
-                           name="role"/>
-                    Права на модерацию (MODER)
-                </label>
-                <small th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="text-danger"></small>
-            </fieldset>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Подразделение</label>
+                            <select th:field="*{departmentId}" class="form-select">
+                                <option value="">Выберите подразделение...</option>
+                                <option th:each="d : ${departments}"
+                                        th:value="${d.id}"
+                                        th:text="${d.shortName}"></option>
+                            </select>
+                            <div th:errors="*{departmentId}" class="text-danger small"></div>
+                        </div>
 
-            <button type="submit">Изменить сотрудника</button>
-        </form>
-    </article>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Выберите роль (наличие прав)</label>
+                            <div>
+                                <div class="form-check">
+                                    <input th:field="*{role}"
+                                           th:value="USER"
+                                           type="radio"
+                                           class="form-check-input"
+                                           id="roleUser">
+                                    <label class="form-check-label" for="roleUser">Без функционала (USER)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input th:field="*{role}"
+                                           th:value="MODERATOR"
+                                           type="radio"
+                                           class="form-check-input"
+                                           id="roleModerator">
+                                    <label class="form-check-label" for="roleModerator">Права на модерацию (MODER)</label>
+                                </div>
+                            </div>
+                            <div th:errors="*{role}" class="text-danger small"></div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-grow-1" style="height: 48px;">
+                                Сохранить
+                            </button>
+                            <a href="/moderators/all" class="btn btn-secondary flex-grow-1 d-flex align-items-center justify-content-center" style="height: 48px;">
+                                Отменить
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
+
 <footer th:replace="fragments/footer"></footer>
 </body>
 </html>

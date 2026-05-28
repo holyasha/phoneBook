@@ -3,45 +3,68 @@
 <head th:replace="fragments/head"/>
 <body>
 <div th:replace="fragments/navbar"></div>
-<main class="container">
-    <article style="max-width: 600px; margin: 0 auto;">
-        <hgroup>
-            <h1>Вход</h1>
-            <p>Введите свои данные для доступа к системе</p>
-        </hgroup>
-        <form th:action="@{/users/login}" th:method="post">
-            <label for="username">
-                Логин
-                <input id="username" 
-                       name="username" 
-                       th:value="${username}"
-                       type="text" 
-                       placeholder="Введите логин"
-                       required/>
-            </label>
 
-            <label for="password">
-                Пароль
-                <input id="password" 
-                       name="password" 
-                       type="password" 
-                       placeholder="Введите пароль"
-                       required/>
-            </label>
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h2 class="h4 mb-0">Вход в систему</h2>
+                    <p class="mb-0 small opacity-75">Введите свои данные для доступа</p>
+                </div>
 
-            <label>
-                <input type="checkbox" name="remember-me" role="switch">
-                Запомнить меня
-            </label>
+                <div class="card-body p-4">
+                    <form th:action="@{/users/login}" th:method="post">
+                        <!-- Логин -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-bold">Логин</label>
+                            <input id="username"
+                                   name="username"
+                                   th:value="${username}"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="Введите логин"
+                                   required>
+                        </div>
 
-            <p class="text-danger" th:if="${badCredentials}">
-                <mark>Неверный логин или пароль.</mark>
-            </p>
+                        <!-- Пароль -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-bold">Пароль</label>
+                            <input id="password"
+                                   name="password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Введите пароль"
+                                   required>
+                        </div>
 
-            <button type="submit">Войти</button>
-        </form>
-    </article>
+                        <!-- Ошибка авторизации -->
+                        <div th:if="${badCredentials}" class="alert alert-danger py-2 mb-3">
+                            <i class="bi bi-exclamation-triangle-fill"></i> Неверный логин или пароль.
+                        </div>
+
+                        <!-- Кнопка входа -->
+                        <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
+                            <i class="bi bi-box-arrow-in-right"></i> Войти
+                        </button>
+
+                        <!-- Запомнить меня (на отдельной строке) -->
+                        <div class="form-check">
+                            <input type="checkbox"
+                                   name="remember-me"
+                                   class="form-check-input"
+                                   id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Запомнить меня
+                            </label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
+
 <footer th:replace="fragments/footer"></footer>
 </body>
 </html>

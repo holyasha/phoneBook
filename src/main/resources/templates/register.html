@@ -3,85 +3,125 @@
 <head th:replace="fragments/head"/>
 <body>
 <div th:replace="fragments/navbar"></div>
-<main class="container">
-    <article style="max-width: 600px; margin: 0 auto;">
-        <hgroup>
-            <h1>Создать пользователя</h1>
-        </hgroup>
-        <form th:action="@{/users/register}"
-              th:method="post"
-              th:object="${userRegistrationDto}">
-            <label for="username">
-                Логин
-                <input th:field="*{username}"
-                       th:errorclass="is-invalid"
-                       type="text"
-                       id="username"
-                       placeholder="Выберите логин"
-                       required/>
-                <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></small>
-            </label>
 
-            <label for="password">
-                Пароль
-                <input th:field="*{password}"
-                       required
-                       minlength="5"
-                       maxlength="20"
-                       th:errorclass="is-invalid"
-                       type="password"
-                       id="password"
-                       placeholder="Придумайте пароль"/>
-                <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></small>
-            </label>
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="h4 mb-0 text-center">Создание пользователя</h2>
+                </div>
 
-            <label for="confirmPassword">
-                Подтвердите пароль
-                <input th:field="*{confirmPassword}"
-                       required
-                       minlength="5"
-                       maxlength="20"
-                       th:errorclass="is-invalid"
-                       type="password"
-                       id="confirmPassword"
-                       placeholder="Повторите пароль"/>
-                <small th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"
-                       class="text-danger"></small>
-            </label>
+                <div class="card-body">
+                    <form th:action="@{/users/register}"
+                          th:method="post"
+                          th:object="${userRegistrationDto}">
 
-            <fieldset>
-                <legend>Выберите роль</legend>
-                <label>
-                    <input th:field="*{role}"
-                           th:value="USER"
-                           type="radio"
-                           name="role"/>
-                    USER
-                </label>
-                <label>
-                    <input th:field="*{role}"
-                           th:value="MODERATOR"
-                           type="radio"
-                           name="role"/>
-                    MODERATOR
-                </label>
-                <small th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="text-danger"></small>
-            </fieldset>
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-bold">Логин</label>
+                            <input th:field="*{username}"
+                                   th:errorclass="is-invalid"
+                                   type="text"
+                                   class="form-control"
+                                   id="username"
+                                   placeholder="Выберите логин"
+                                   required>
+                            <div th:if="${#fields.hasErrors('username')}"
+                                 th:errors="*{username}"
+                                 class="invalid-feedback"></div>
+                        </div>
 
-            <label for="department">
-                Подразделение
-                <select id="department" th:field="*{departmentId}" required>
-                    <option value="">Выберите подразделение...</option>
-                    <option th:each="d : ${departments}"
-                            th:value="${d.id}"
-                            th:text="${d.shortName}"></option>
-                </select>
-            </label>
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-bold">Пароль</label>
+                            <input th:field="*{password}"
+                                   type="password"
+                                   class="form-control"
+                                   id="password"
+                                   placeholder="Придумайте пароль"
+                                   minlength="5"
+                                   maxlength="20"
+                                   required>
+                            <div th:if="${#fields.hasErrors('password')}"
+                                 th:errors="*{password}"
+                                 class="invalid-feedback"></div>
+                            <small class="text-muted">Длина пароля: от 5 до 20 символов</small>
+                        </div>
 
-            <button type="submit">Создать</button>
-        </form>
-    </article>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label fw-bold">Подтвердите пароль</label>
+                            <input th:field="*{confirmPassword}"
+                                   type="password"
+                                   class="form-control"
+                                   id="confirmPassword"
+                                   placeholder="Повторите пароль"
+                                   minlength="5"
+                                   maxlength="20"
+                                   required>
+                            <div th:if="${#fields.hasErrors('confirmPassword')}"
+                                 th:errors="*{confirmPassword}"
+                                 class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Выберите роль</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input th:field="*{role}"
+                                           th:value="USER"
+                                           type="radio"
+                                           class="form-check-input"
+                                           id="roleUser">
+                                    <label class="form-check-label" for="roleUser">
+                                        <span class="badge bg-secondary">USER</span>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input th:field="*{role}"
+                                           th:value="MODERATOR"
+                                           type="radio"
+                                           class="form-check-input"
+                                           id="roleModerator">
+                                    <label class="form-check-label" for="roleModerator">
+                                        <span class="badge bg-info">MODERATOR</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div th:if="${#fields.hasErrors('role')}"
+                                 th:errors="*{role}"
+                                 class="text-danger small mt-1"></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="department" class="form-label fw-bold">Подразделение</label>
+                            <select id="department"
+                                    th:field="*{departmentId}"
+                                    class="form-select"
+                                    required>
+                                <option value="">Выберите подразделение...</option>
+                                <option th:each="d : ${departments}"
+                                        th:value="${d.id}"
+                                        th:text="${d.shortName}"></option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('departmentId')}"
+                                 th:errors="*{departmentId}"
+                                 class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-grow-1" style="height: 60px;">
+                                Создать пользователя
+                            </button>
+                            <a href="/moderators/all" class="btn btn-secondary flex-grow-1 d-flex align-items-center justify-content-center" style="height: 60px;">
+                                Отменить
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
+
 <footer th:replace="fragments/footer"></footer>
 </body>
 </html>

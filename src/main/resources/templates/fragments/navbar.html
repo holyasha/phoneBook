@@ -1,33 +1,61 @@
-<nav xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
-    <div class="container">
-        <ul>
-            <li>
-                <strong>
-                    <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
-                        <img th:src="@{/logo.png}" alt="Логотип ИУЦТ" style="height: 40px; width: auto;">
-                        Телефонный справочник ИУЦТ
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid px-2">
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <img th:src="@{/logo.png}" alt="Логотип ИУЦТ" height="30">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <!-- Сотрудники -->
+                <li class="nav-item dropdown" sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Сотрудники
                     </a>
-                </strong>
-            </li>
-        </ul>
-        <ul >
-            <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')"><a href="/employees/all">Сотрудники</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a href="/employees/inactive">Удалённые</a></li>
-            <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
-            <a href="/employees/add" style="display:inline-block; min-width:220px; text-align:center;">Добавить сотрудника</a>
-            </li>
-            <li sec:authorize="hasRole('ADMIN')"><a href="/moderators/all">Пользователи</a></li>
-            <li sec:authorize="hasRole('ADMIN')">
-            <a href="/users/register" style="display:inline-block; min-width:220px; text-align:center;">Добавить пользователя</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a href="/departments/all">Подразделения</a></li>
-            <li sec:authorize="hasRole('ADMIN')">
-            <a href="/departments/add" style="display:inline-block; min-width:200px; text-align:center;">Добавить подразделение</a>
-            </li>
-            <li sec:authorize="isAuthenticated()">
-                <form th:method="post" th:action="@{/users/logout}" style="margin: 0;">
-                    <button type="submit" class="contrast outline">Выйти</button>
-                </form>
-            </li>
-        </ul>
+                    <ul class="dropdown-menu p-0 m-0" style="min-width: 160px;">
+                        <li><a class="dropdown-item py-1 px-3" href="/employees/all">Список сотрудников</a></li>
+                        <li sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')"><a class="dropdown-item py-1 px-3" href="/employees/add">Добавить сотрудника</a></li>
+                        <li sec:authorize="hasRole('ADMIN')"><hr class="my-0"></li>
+                        <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item py-1 px-3 text-danger" href="/employees/inactive">Удалённые</a></li>
+                    </ul>
+                </li>
+
+                <!-- Пользователи -->
+                <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Пользователи
+                    </a>
+                    <ul class="dropdown-menu p-0 m-0" style="min-width: 160px;">
+                        <li><a class="dropdown-item py-1 px-3" href="/moderators/all">Список пользователей</a></li>
+                        <li><a class="dropdown-item py-1 px-3" href="/users/register">Добавить пользователя</a></li>
+                    </ul>
+                </li>
+
+                <!-- Подразделения -->
+                <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Подразделения
+                    </a>
+                    <ul class="dropdown-menu p-0 m-0" style="min-width: 160px;">
+                        <li><a class="dropdown-item py-1 px-3" href="/departments/all">Список подразделений</a></li>
+                        <li><a class="dropdown-item py-1 px-3" href="/departments/add">Добавить подразделение</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:method="post" th:action="@{/users/logout}">
+                        <button type="submit" class="btn btn-outline-light btn-sm ms-lg-2 mt-2 mt-lg-0 w-100">
+                            Выйти
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
