@@ -3,70 +3,71 @@
 <head th:replace="fragments/head"/>
 <body>
 <div th:replace="fragments/navbar"></div>
-<main class="container">
-    <article style="max-width: 700px; margin: 0 auto;">
-        <hgroup>
-            <h1>Изменение подразделения</h1>
-        </hgroup>
-        <form th:action="@{'/departments/update/' + ${id}}"
-              th:method="post"
-              th:object="${departmentModel}">
 
-            <div>
-                <label for="shortName">
-                    Аббревиатура
-                    <input th:field="*{shortName}"
-                           th:errorclass="is-invalid"
-                           type="text"
-                           id="shortName"
-                           placeholder="Введите аббревиатуру"
-                           required/>
-                    <small th:if="${#fields.hasErrors('shortName')}" th:errors="*{shortName}"
-                           class="text-danger"></small>
-                </label>
+<main class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Изменение подразделения</h3>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{'/departments/update/' + ${id}}"
+                          th:method="post"
+                          th:object="${departmentModel}">
 
-                <label for="fullName">
-                    Полное название
-                    <input th:field="*{fullName}"
-                           th:errorclass="is-invalid"
-                           type="text"
-                           id="fullName"
-                           placeholder="Введите fullName"
-                           required/>
-                    <small th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"
-                           class="text-danger"></small>
-                </label>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Аббревиатура <span class="text-danger">*</span></label>
+                            <input th:field="*{shortName}"
+                                   type="text"
+                                   class="form-control"
+                                   required>
+                            <div th:errors="*{shortName}" class="text-danger small"></div>
+                        </div>
 
-                <fieldset>
-                    <legend>Выберите тип</legend>
-                    <label>
-                        <input th:field="*{type}"
-                               th:value="DEPARTMENT"
-                               type="radio"
-                               name="type"/>
-                        Кафедра
-                    </label>
-                    <label>
-                        <input th:field="*{type}"
-                               th:value="ADMINISTRATION"
-                               type="radio"
-                               name="type"/>
-                        Администрация
-                    </label>
-                    <label>
-                        <input th:field="*{type}"
-                               th:value="OFFICE"
-                               type="radio"
-                               name="type"/>
-                        Отдел
-                    </label>
-                    <small th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger"></small>
-                </fieldset>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Полное название <span class="text-danger">*</span></label>
+                            <input th:field="*{fullName}"
+                                   type="text"
+                                   class="form-control"
+                                   required>
+                            <div th:errors="*{fullName}" class="text-danger small"></div>
+                        </div>
 
-                <button type="submit">Изменить информацию о подразделении</button>
-        </form>
-    </article>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Тип подразделения <span class="text-danger">*</span></label>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="form-check">
+                                    <input th:field="*{type}" th:value="DEPARTMENT" type="radio" class="form-check-input" id="typeDept">
+                                    <label class="form-check-label" for="typeDept">Кафедра</label>
+                                </div>
+                                <div class="form-check">
+                                    <input th:field="*{type}" th:value="ADMINISTRATION" type="radio" class="form-check-input" id="typeAdmin">
+                                    <label class="form-check-label" for="typeAdmin">Администрация</label>
+                                </div>
+                                <div class="form-check">
+                                    <input th:field="*{type}" th:value="OFFICE" type="radio" class="form-check-input" id="typeOff">
+                                    <label class="form-check-label" for="typeOff">Отдел</label>
+                                </div>
+                            </div>
+                            <div th:errors="*{type}" class="text-danger small"></div>
+                        </div>
+
+                        <div class="row g-2 mt-4">
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-primary w-100" style="height: 48px;">Сохранить</button>
+                            </div>
+                            <div class="col-6">
+                                <a href="/departments/all" class="btn btn-secondary w-100 d-flex align-items-center justify-content-center" style="height: 48px;">Отменить</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
+
 <footer th:replace="fragments/footer"></footer>
 </body>
 </html>

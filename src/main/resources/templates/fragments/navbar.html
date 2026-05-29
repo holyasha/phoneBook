@@ -13,7 +13,6 @@
 
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <!-- Сотрудники -->
                 <li class="nav-item dropdown" sec:authorize="hasAnyRole('ADMIN', 'MODERATOR')">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-size: 0.95rem;">
                         Сотрудники
@@ -26,7 +25,6 @@
                     </ul>
                 </li>
 
-                <!-- Пользователи -->
                 <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-size: 0.95rem;">
                         Пользователи
@@ -37,7 +35,6 @@
                     </ul>
                 </li>
 
-                <!-- Подразделения -->
                 <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-size: 0.95rem;">
                         Подразделения
@@ -48,7 +45,6 @@
                     </ul>
                 </li>
 
-                <!-- Выход -->
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <form th:method="post" th:action="@{/users/logout}">
                         <button type="submit" class="btn btn-outline-light btn-sm ms-lg-2 mt-2 mt-lg-0 w-100" style="font-size: 0.85rem; padding: 0.3rem 0.7rem;">

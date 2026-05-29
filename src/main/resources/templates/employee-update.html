@@ -1,139 +1,188 @@
-
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head"/>
 <body>
 <div th:replace="fragments/navbar"></div>
-<main class="container">
-    <article style="max-width: 700px; margin: 0 auto;">
-        <hgroup>
-            <h1>Изменение сотрудника</h1>
-        </hgroup>
-        <form th:action="@{'/employees/update/' + ${id}}"
-              th:method="post"
-              th:object="${employeeModel}">
 
-            <div class="grid">
+<main class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Изменение сотрудника</h3>
+                    <p class="mb-0 small opacity-75">Редактирование информации о сотруднике</p>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{'/employees/update/' + ${id}}"
+                          th:method="post"
+                          th:object="${employeeModel}">
 
-              <label for="lastName">
-                    Фамилия
-                    <input th:field="*{lastName}"
-                           th:errorclass="is-invalid"
-                           type="text"
-                           id="lastName"
-                           placeholder="Введите фамилию"
-                           required/>
-                    <small th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></small>
-                </label>
-                
-                <label for="firstName">
-                    Имя
-                    <input th:field="*{firstName}"
-                           th:errorclass="is-invalid"
-                           type="text"
-                           id="firstName"
-                           placeholder="Введите имя"
-                           required/>
-                    <small th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
-                           class="text-danger"></small>
-                </label>
+                        <!-- ФИО в три колонки -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label for="lastName" class="form-label fw-bold">Фамилия <span class="text-danger">*</span></label>
+                                <input th:field="*{lastName}"
+                                       th:errorclass="is-invalid"
+                                       type="text"
+                                       class="form-control"
+                                       id="lastName"
+                                       placeholder="Введите фамилию"
+                                       required>
+                                <div th:if="${#fields.hasErrors('lastName')}"
+                                     th:errors="*{lastName}"
+                                     class="invalid-feedback"></div>
+                            </div>
 
-                <label for="middleName">
-                    Отчество
-                    <input th:field="*{middleName}"
-                           th:errorclass="is-invalid"
-                           type="text"
-                           id="middleName"
-                           placeholder="Введите Отчество"
-                           />
-                    <small th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"
-                           class="text-danger"></small>
-                </label>
+                            <div class="col-md-4">
+                                <label for="firstName" class="form-label fw-bold">Имя <span class="text-danger">*</span></label>
+                                <input th:field="*{firstName}"
+                                       th:errorclass="is-invalid"
+                                       type="text"
+                                       class="form-control"
+                                       id="firstName"
+                                       placeholder="Введите имя"
+                                       required>
+                                <div th:if="${#fields.hasErrors('firstName')}"
+                                     th:errors="*{firstName}"
+                                     class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="middleName" class="form-label fw-bold">Отчество</label>
+                                <input th:field="*{middleName}"
+                                       th:errorclass="is-invalid"
+                                       type="text"
+                                       class="form-control"
+                                       id="middleName"
+                                       placeholder="Введите отчество">
+                                <div th:if="${#fields.hasErrors('middleName')}"
+                                     th:errors="*{middleName}"
+                                     class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <!-- Подразделение (только для ADMIN) -->
+                        <div sec:authorize="hasRole('ADMIN')" class="mb-3">
+                            <label for="department" class="form-label fw-bold">Подразделение <span class="text-danger">*</span></label>
+                            <select id="department"
+                                    th:field="*{departmentId}"
+                                    class="form-select"
+                                    required>
+                                <option value="">Выберите подразделение...</option>
+                                <option th:each="d : ${departments}"
+                                        th:value="${d.id}"
+                                        th:text="${d.shortName}"></option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('departmentId')}"
+                                 th:errors="*{departmentId}"
+                                 class="invalid-feedback"></div>
+                        </div>
+
+                        <!-- Контактная информация в две колонки -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="officeNumber" class="form-label fw-bold">Кабинет <span class="text-danger">*</span></label>
+                                <input th:field="*{officeNumber}"
+                                       th:errorclass="is-invalid"
+                                       type="text"
+                                       class="form-control"
+                                       id="officeNumber"
+                                       placeholder="Введите кабинет"
+                                       required>
+                                <div th:if="${#fields.hasErrors('officeNumber')}"
+                                     th:errors="*{officeNumber}"
+                                     class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="workPhone" class="form-label fw-bold">Рабочий телефон <span class="text-danger">*</span></label>
+                                <input th:field="*{workPhone}"
+                                       th:errorclass="is-invalid"
+                                       type="tel"
+                                       class="form-control"
+                                       id="workPhone"
+                                       placeholder="4 цифры"
+                                       required>
+                                <div th:if="${#fields.hasErrors('workPhone')}"
+                                     th:errors="*{workPhone}"
+                                     class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="personalPhone" class="form-label fw-bold">Личный телефон <span class="text-danger">*</span></label>
+                                <input th:field="*{personalPhone}"
+                                       th:errorclass="is-invalid"
+                                       type="tel"
+                                       class="form-control"
+                                       id="personalPhone"
+                                       placeholder="Введите номер телефона"
+                                       required>
+                                <div th:if="${#fields.hasErrors('personalPhone')}"
+                                     th:errors="*{personalPhone}"
+                                     class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-bold">Email <span class="text-danger">*</span></label>
+                                <input th:field="*{email}"
+                                       th:errorclass="is-invalid"
+                                       type="email"
+                                       class="form-control"
+                                       id="email"
+                                       placeholder="example@mail.ru"
+                                       required>
+                                <div th:if="${#fields.hasErrors('email')}"
+                                     th:errors="*{email}"
+                                     class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="additionalInfo" class="form-label fw-bold">Telegram ID (без @)</label>
+                                <input th:field="*{additionalInfo}"
+                                       th:errorclass="is-invalid"
+                                       type="text"
+                                       class="form-control"
+                                       id="additionalInfo"
+                                       placeholder="username">
+                                <div th:if="${#fields.hasErrors('additionalInfo')}"
+                                     th:errors="*{additionalInfo}"
+                                     class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="statusNote" class="form-label fw-bold">Дополнительная информация</label>
+                                <input th:field="*{statusNote}"
+                                       th:errorclass="is-invalid"
+                                       type="text"
+                                       class="form-control"
+                                       id="statusNote"
+                                       placeholder="При необходимости">
+                                <div th:if="${#fields.hasErrors('statusNote')}"
+                                     th:errors="*{statusNote}"
+                                     class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <!-- Кнопки -->
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary flex-grow-1" style="height: 48px;">
+                                Сохранить изменения
+                            </button>
+                            <a href="/employees/all" class="btn btn-secondary flex-grow-1 d-flex align-items-center justify-content-center" style="height: 48px;">
+                             Отменить
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <div sec:authorize="hasRole('ADMIN')">
-            <label for="department">
-                Подразделение
-                <select id="department" th:field="*{departmentId}" required>
-                    <option value="">Выберите подразделение...</option>
-                    <option th:each="d : ${departments}"
-                            th:value="${d.id}"
-                            th:text="${d.shortName}"></option>
-                </select>
-                <small th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"
-                       class="text-danger"></small>
-            </label>
-            </div>
-            
-            <div>
-                <label for="officeNumber">
-                    Кабинет
-                    <input th:field="*{officeNumber}"
-                           th:errorclass="is-invalid"
-                           type="text"
-                           id="officeNumber"
-                           placeholder="Введите кабинет"
-                           required/>
-                    <small th:if="${#fields.hasErrors('officeNumber')}" th:errors="*{officeNumber}"
-                           class="text-danger"></small>
-                </label>
-
-                <label for="workPhone">
-                    Рабочий телефон
-                    <input th:field="*{workPhone}"
-                           th:errorclass="is-invalid"
-                           id="workPhone"
-                           required/>
-                    <small th:if="${#fields.hasErrors('workPhone')}" th:errors="*{workPhone}"
-                           class="text-danger"></small>
-                </label>
-
-                <label for="personalPhone">
-                    Личный телефон
-                    <input th:field="*{personalPhone}"
-                           th:errorclass="is-invalid"
-                           id="personalPhone"
-                           placeholder="Введите номер телефона"
-                           required/>
-                    <small th:if="${#fields.hasErrors('personalPhone')}" th:errors="*{personalPhone}"
-                           class="text-danger"></small>
-                </label>
-
-                <label for="email">
-                    Email
-                    <input th:field="*{email}"
-                           th:errorclass="is-invalid"
-                           id="email"
-                           placeholder="Введите Email"
-                           required/>
-                    <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></small>
-                </label>
-
-                <label for="statusNote">
-                    Дополнительная информация
-                    <input th:field="*{statusNote}"
-                           th:errorclass="is-invalid"
-                           id="statusNote"
-                           placeholder="Введите дополнительную информацию при необходимости"/>
-                    <small th:if="${#fields.hasErrors('statusNote')}" th:errors="*{statusNote}"
-                           class="text-danger"></small>
-                </label>
-
-                <label for="additionalInfo">
-                    Telegram id
-                    <input th:field="*{additionalInfo}"
-                           th:errorclass="is-invalid"
-                           id="additionalInfo"
-                           placeholder="Введите id(без @)"/>
-                    <small th:if="${#fields.hasErrors('additionalInfo')}" th:errors="*{additionalInfo}"
-                           class="text-danger"></small>
-                </label>
-            </div>
-
-            <button type="submit">Изменить сотрудника</button>
-        </form>
-    </article>
+        </div>
+    </div>
 </main>
+
 <footer th:replace="fragments/footer"></footer>
 </body>
 </html>
